@@ -1,0 +1,61 @@
+name:  Bug Report
+description: File a bug report to help us improve the project
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    attributes:
+      label: What happened?
+      description: A clear and concise description of the issue.
+      placeholder: |
+        Describe the issue you encountered and what you expected to happen.
+        Example: "When I tried running a simulation/notebook etc , the code didn't execute/crashed.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: Provide step-by-step instructions to reproduce the issue.
+      placeholder: |
+        1. clone the repository
+        2. run the program where the bug was found
+        3. describe what occured
+        4. mention what was expected instead
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: What should have happened instead?
+      placeholder: "Example: The run should have been successful and I should have got the desired output on my system to further contribute to this repository."
+      render: shell
+
+  - type: input
+    attributes:
+      label: Affected folder
+      description: Mention where the issue occurs (syntax issue or some compatibility problem)
+      placeholder: "src/AUV/model/camera.xacro"
+
+  - type: input
+    attributes:
+      label: Environment
+      description: System & tech stack info (optional but helpful).
+      placeholder: "e.g. ROS2 , Jupyter Notebook etc etc"
+
+  - type: textarea
+    attributes:
+      label: Screenshots / logs
+      description: Paste any error logs or add screenshots if applicable.
+      placeholder: "No visible error logs. the program compiles for a very long time for no reason..."
+      render: shell
+
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: Any other details or edge cases that might be related.
+      placeholder: "This only happens in this in the older version of the software that is found on this repository..."
+      render: shell
