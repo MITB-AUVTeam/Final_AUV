@@ -1,0 +1,13 @@
+# PATHS
+
+path: /home/pranav/Projects/Final_AUV/torpedo_launcher/bounding_boxes/data
+train: images/train      
+val: images/val        
+test: images/test        
+
+# CLASSES
+nc: 3
+names:
+  0: shark
+  1: sawfish
+  2: hole
