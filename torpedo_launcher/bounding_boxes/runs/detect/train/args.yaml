@@ -1,8 +1,8 @@
 task: detect
 mode: train
-model: yolov8m.pt
+model: yolo11m.pt
 data: config.yaml
-epochs: 200
+epochs: 250
 time: null
 patience: 20
 batch: 16
@@ -32,7 +32,7 @@ freeze: 8
 multi_scale: false
 overlap_mask: true
 mask_ratio: 4
-dropout: 0.2
+dropout: 0.25
 val: true
 split: val
 save_json: false
@@ -85,7 +85,7 @@ nbs: 64
 hsv_h: 0.02
 hsv_s: 0.7
 hsv_v: 0.4
-degrees: 45.0
+degrees: 60.0
 translate: 0.08
 scale: 0.25
 shear: 2.0
