@@ -1,0 +1,76 @@
+#include <AccelStepper.h>
+
+// --- Stepper configs ---
+#define X_STEP_PIN 5
+#define X_DIR_PIN  3
+#define X_EN_PIN   4  // Enable pin for X
+
+#define Y_STEP_PIN 6
+#define Y_DIR_PIN  9
+#define Y_EN_PIN   7  // Enable pin for Y
+
+// Create steppers in driver mode
+AccelStepper stepperX(AccelStepper::DRIVER, X_STEP_PIN, X_DIR_PIN);
+AccelStepper stepperY(AccelStepper::DRIVER, Y_STEP_PIN, Y_DIR_PIN);
+
+void setup() {
+  Serial.begin(9600);
+
+  // Enable pins as outputs
+  pinMode(X_EN_PIN, OUTPUT);
+  pinMode(Y_EN_PIN, OUTPUT);
+
+  // Manually activate drivers (LOW = enabled on most drivers)
+  digitalWrite(X_EN_PIN, LOW);
+  digitalWrite(Y_EN_PIN, LOW);
+
+  stepperX.setMaxSpeed(1000);
+  stepperX.setAcceleration(500);
+
+  stepperY.setMaxSpeed(1000);
+  stepperY.setAcceleration(500);
+
+  Serial.println("Stepper controller ready. Send 'dX dY' relative steps.");
+}
+
+void loop() {
+  stepperX.run();
+  stepperY.run();
+  listenForSerialCommands();
+}
+
+void listenForSerialCommands() {
+  if (Serial.available() > 0) {
+    static char inputBuffer[32];
+    static byte ndx = 0;
+    char endMarker = '\n';
+    char rc = Serial.read();
+
+    if (rc != endMarker) {
+      if (ndx < sizeof(inputBuffer) - 1) {
+        if (rc != '\r') { // Ignore carriage return
+          inputBuffer[ndx] = rc;
+          ndx++;
+        }
+      }
+    } else {
+      inputBuffer[ndx] = '\0'; // Null terminator
+      ndx = 0; // Reset for next message
+
+      long deltaX, deltaY;
+      if (sscanf(inputBuffer, "%ld %ld", &deltaX, &deltaY) == 2) {
+        Serial.print("Relative move: X=");
+        Serial.print(deltaX);
+        Serial.print(", Y=");
+        Serial.println(deltaY);
+
+        // Use relative move instead of absolute
+        stepperX.move(deltaX);
+        stepperY.move(deltaY);
+      } else {
+        Serial.print("Invalid command: ");
+        Serial.println(inputBuffer);
+      }
+    }
+  }
+}
